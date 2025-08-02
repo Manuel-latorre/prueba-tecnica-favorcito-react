@@ -1,14 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useWeatherStore } from '@/store/weatherStore';
+import type { CitySuggestion } from '@/types/weather.types';
 
-interface CitySuggestion {
-  id: string;
-  name: string;
-  admin1?: string;
-  country: string;
-  latitude: number;
-  longitude: number;
-}
+
 
 export const useCitySearch = () => {
   const [query, setQuery] = useState('');
