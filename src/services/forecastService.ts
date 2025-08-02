@@ -10,7 +10,7 @@ export async function getForecast(
 ): Promise<OpenMeteoForecastResponse> {
   try {
     const response = await fetchWithTimeout(
-      `${API_CONFIG.BASE_URL}/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`
+      `${API_CONFIG.BASE_URL}/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`
     );
 
     if (!response.ok) {
