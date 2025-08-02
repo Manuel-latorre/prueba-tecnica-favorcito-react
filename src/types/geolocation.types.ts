@@ -1,3 +1,3 @@
-import type { Coordinates } from './weather.types';
+import type { Coordinates } from '@/types/weather.types';
 
 export type GeolocationPosition = Coordinates;
