@@ -64,3 +64,7 @@ export interface CurrentWeatherProps {
   weather: OpenMeteoCurrentResponse;
   cityName: string;
 }
+
+export interface WeatherForecastProps {
+  forecast: OpenMeteoForecastResponse;
+}
