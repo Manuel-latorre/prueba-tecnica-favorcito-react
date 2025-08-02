@@ -1,5 +1,5 @@
 import { useWeatherStore } from '@/store/weatherStore';
-import { SearchForm, CurrentWeather, WeatherForecast, LoadingSpinner, ErrorMessage, SearchHistory } from '@/components/index';
+import { CitySearch, CurrentWeather, WeatherForecast, LoadingSpinner, ErrorMessage } from '@/components/index';
 import { MapPin } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -12,10 +12,7 @@ export function WeatherApp() {
     forecast,
     loading,
     error,
-    searchHistory,
-    searchWeather,
     searchWeatherByLocation,
-    clearSearchHistory,
   } = useWeatherStore();
 
   // Computed values
@@ -33,52 +30,22 @@ export function WeatherApp() {
     }
   }, [isEmpty, loading, error, searchWeatherByLocation]); // Dependencias para evitar re-ejecuciones innecesarias
 
-  const handleSearch = async (city: string) => {
-    await searchWeather(city);
-  };
-
-
-  const handleClearHistory = () => {
-    clearSearchHistory();
-  };
-
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center max-md:p-4 py-8">
       <div className="max-w-4xl mx-auto space-y-6 w-full">
         <div className="flex justify-center">
-          <SearchForm
-            onSearch={handleSearch}
-            loading={loading}
-            placeholder="Ej: Madrid, Barcelona, Londres..."
-          />
+          <CitySearch />
         </div>
 
         {loading && (
           <div className="flex justify-center">
-            <LoadingSpinner
-              size="lg"
-              text="Obteniendo información del clima..."
-            />
-          </div>
-        )}
-
-        {/* Search History */}
-        {!loading && !error && searchHistory.length > 0 && (
-          <div className="flex justify-center">
-            <SearchHistory
-              history={searchHistory}
-              onSelectCity={handleSearch}
-              onClearHistory={handleClearHistory}
-              loading={loading}
-            />
+            <LoadingSpinner size="lg" />
           </div>
         )}
 
         {error && (
           <div className="max-w-md mx-auto flex justify-center">
-            <ErrorMessage
-              message={error}
-            />
+            <ErrorMessage message={error} />
           </div>
         )}
 
@@ -90,8 +57,6 @@ export function WeatherApp() {
             />
             <WeatherForecast forecast={forecast!} />
           </div>
-
-
         )}
 
         {isEmpty && (
@@ -107,8 +72,6 @@ export function WeatherApp() {
             </div>
           </div>
         )}
-
-
       </div>
     </div>
   );
