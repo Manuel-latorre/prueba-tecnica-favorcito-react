@@ -1,10 +1,11 @@
 // Export all UI components
-export { CitySearch } from '@/components/city-search';
-export { CurrentWeather } from '@/components/current-weather';
-export { WeatherForecast } from '@/components/weather-forecast';
+export { CitySearch } from '@/components/search/city-search';
+export { CitySearchSuggestions } from '@/components/search/city-search-suggestions';
+export { CurrentWeather } from '@/components/weather/current-weather';
+export { WeatherForecast } from '@/components/weather/weather-forecast';
 export { LoadingSpinner } from '@/components/ui/loading-spinner';
-export { ErrorMessage } from '@/components/error-message';
-export { WeatherApp } from '@/components/weather-app';
+export { ErrorMessage } from '@/components/errors/error-message';
+export { WeatherApp } from '@/components/weather/weather-app';
 
 // Export skeleton components
 export { CurrentWeatherSkeleton } from '@/components/ui/skeletons/current-weather-skeleton';
