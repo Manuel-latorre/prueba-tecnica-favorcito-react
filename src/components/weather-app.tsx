@@ -1,22 +1,45 @@
-import { useWeather } from '@/hooks';
+import { useWeatherStore } from '@/store/weatherStore';
 import { SearchForm } from '@/components/ui/search-form';
 import { CurrentWeather } from '@/components/ui/current-weather';
 import { WeatherForecast } from '@/components/ui/weather-forecast';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ErrorMessage } from '@/components/ui/error-message';
+import { SearchHistory } from '@/components/ui/search-history';
 import { Cloud, MapPin } from 'lucide-react';
 
 export function WeatherApp() {
-  const { data, loading, error, searchWeather, reset } = useWeather();
+  const {
+    location,
+    currentWeather,
+    forecast,
+    loading,
+    error,
+    searchHistory,
+    searchWeather,
+    reset,
+    clearSearchHistory,
+  } = useWeatherStore();
+
+  // Computed values
+  const hasData = location && currentWeather && forecast;
+  const isEmpty = !location && !loading && !error;
 
   const handleSearch = async (city: string) => {
     await searchWeather(city);
   };
 
   const handleRetry = () => {
-    if (data.location) {
-      searchWeather(data.location.name);
+    if (location) {
+      searchWeather(location.name);
     }
+  };
+
+  const handleReset = () => {
+    reset();
+  };
+
+  const handleClearHistory = () => {
+    clearSearchHistory();
   };
 
   return (
@@ -50,6 +73,18 @@ export function WeatherApp() {
           </div>
         )}
 
+        {/* Search History */}
+        {!loading && !error && searchHistory.length > 0 && (
+          <div className="flex justify-center">
+            <SearchHistory
+              history={searchHistory}
+              onSelectCity={handleSearch}
+              onClearHistory={handleClearHistory}
+              loading={loading}
+            />
+          </div>
+        )}
+
         {/* Error State */}
         {error && (
           <div className="max-w-md mx-auto">
@@ -61,25 +96,25 @@ export function WeatherApp() {
         )}
 
         {/* Weather Data */}
-        {data.location && data.currentWeather && data.forecast && !loading && (
+        {hasData && !loading && (
           <div className="space-y-6">
             {/* Current Weather */}
             <div className="flex justify-center">
               <CurrentWeather 
-                weather={data.currentWeather}
-                cityName={data.location.name}
+                weather={currentWeather!}
+                cityName={location!.name}
               />
             </div>
 
             {/* Forecast */}
             <div className="max-w-2xl mx-auto">
-              <WeatherForecast forecast={data.forecast} />
+              <WeatherForecast forecast={forecast!} />
             </div>
 
             {/* Reset Button */}
             <div className="flex justify-center">
               <button
-                onClick={reset}
+                onClick={handleReset}
                 className="text-sm text-gray-500 hover:text-gray-700 underline"
               >
                 Buscar otra ciudad
@@ -89,7 +124,7 @@ export function WeatherApp() {
         )}
 
         {/* Empty State */}
-        {!data.location && !loading && !error && (
+        {isEmpty && (
           <div className="text-center space-y-4 py-12">
             <MapPin className="h-16 w-16 text-gray-300 mx-auto" />
             <div>
