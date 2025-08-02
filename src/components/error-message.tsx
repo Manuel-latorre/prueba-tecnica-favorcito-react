@@ -1,7 +1,6 @@
 
 import type { ErrorMessageProps } from '@/types/errors.types';
 
-
 export function ErrorMessage({ message }: ErrorMessageProps) {
   return (
 
