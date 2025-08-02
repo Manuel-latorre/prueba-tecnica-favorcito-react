@@ -1,2 +1,2 @@
 // Export weather store
-export { useWeatherStore } from './weatherStore'; 
+export { useWeatherStore } from '@/store/weatherStore'; 
