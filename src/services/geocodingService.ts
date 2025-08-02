@@ -5,7 +5,7 @@ import {
 import { API_CONFIG } from "@/config/api.config";
 import { fetchWithTimeout } from "@/utils/fetchUtils";
 
-
+// Función para geocodificación directa (búsqueda de ciudades)
 export async function geocoding(city: string): Promise<WeatherLocation> {
   try {
     const response = await fetchWithTimeout(
@@ -31,6 +31,7 @@ export async function geocoding(city: string): Promise<WeatherLocation> {
   }
 }
 
+// Función para obtener sugerencias de ciudades
 export async function geocodingSuggestions(city: string): Promise<WeatherLocation[]> {
   try {
     const response = await fetchWithTimeout(
@@ -56,30 +57,7 @@ export async function geocodingSuggestions(city: string): Promise<WeatherLocatio
   }
 }
 
-export async function reverseGeocoding(latitude: number, longitude: number): Promise<WeatherLocation> {
-  try {
-    const response = await fetchWithTimeout(
-      `${API_CONFIG.GEOCODING_URL}/reverse?latitude=${latitude}&longitude=${longitude}&language=es&format=json`
-    );
-
-    if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status}`);
-    }
-
-    const data: OpenMeteoGeocodingResponse = await response.json();
-
-    if (!data.results || data.results.length === 0) {
-      throw new Error("No se pudo obtener información de la ubicación");
-    }
-
-    return data.results[0];
-  } catch (error) {
-    console.error("Error en reverse geocoding:", error);
-    throw error;
-  }
-}
-
-// Función alternativa usando Nominatim (OpenStreetMap) que permite CORS
+// Función para obtener nombre de ubicación desde coordenadas usando Nominatim
 export async function reverseGeocodingNominatim(latitude: number, longitude: number): Promise<WeatherLocation> {
   try {
     const response = await fetchWithTimeout(
@@ -96,9 +74,6 @@ export async function reverseGeocodingNominatim(latitude: number, longitude: num
       throw new Error("No se pudo obtener información de la ubicación");
     }
 
-    // Debug: mostrar la respuesta de Nominatim
-    console.log("Nominatim response:", data);
-
     // Función para obtener el mejor nombre de la ubicación
     const getLocationName = (data: any): string => {
       const address = data.address || {};
@@ -112,11 +87,9 @@ export async function reverseGeocodingNominatim(latitude: number, longitude: num
       // Si name es un número o no es útil, usar display_name
       if (data.name) {
         const nameStr = String(data.name);
-        // Verificar si es un número o un ID
         if (!isNaN(Number(nameStr)) || nameStr.length < 3) {
           // Usar display_name en su lugar
           const displayParts = data.display_name?.split(',') || [];
-          // Buscar la primera parte que no sea un número
           for (const part of displayParts) {
             const trimmed = part.trim();
             if (trimmed && isNaN(Number(trimmed)) && trimmed.length > 2) {
