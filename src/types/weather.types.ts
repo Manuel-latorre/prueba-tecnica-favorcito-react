@@ -59,3 +59,8 @@ export interface OpenMeteoForecastResponse {
     temperature_2m_min: number[];
   };
 } 
+
+export interface CurrentWeatherProps {
+  weather: OpenMeteoCurrentResponse;
+  cityName: string;
+}
