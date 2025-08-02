@@ -1,4 +1,3 @@
-export interface GeolocationPosition {
-    latitude: number;
-    longitude: number;
-}
+import type { Coordinates } from './weather.types';
+
+export type GeolocationPosition = Coordinates;
