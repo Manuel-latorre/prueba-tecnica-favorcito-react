@@ -1,14 +1,8 @@
 import { useState, useCallback } from 'react';
 import { geocoding } from '@/services/geocodingService';
 import type { WeatherLocation } from '@/types/weather.types';
+import type { UseGeocodingReturn } from '@/types/geolocation.types';
 
-interface UseGeocodingReturn {
-  location: WeatherLocation | null;
-  loading: boolean;
-  error: string | null;
-  searchLocation: (city: string) => Promise<void>;
-  reset: () => void;
-}
 
 export function useGeocoding(): UseGeocodingReturn {
   const [location, setLocation] = useState<WeatherLocation | null>(null);
