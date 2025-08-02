@@ -1,84 +1,73 @@
-import { useState, useCallback } from 'react';
-import { geocoding } from '@/services/geocodingService';
-import { getCurrentWeather } from '@/services/currentWeatherService';
-import { getForecast } from '@/services/forecastService';
-import type { WeatherLocation, OpenMeteoCurrentResponse, OpenMeteoForecastResponse } from '@/types/weather.types';
+import { useWeatherStore } from "@/store/weatherStore";
+import { useCallback, useEffect, useState } from "react";
 
-interface WeatherData {
-  location: WeatherLocation | null;
-  currentWeather: OpenMeteoCurrentResponse | null;
-  forecast: OpenMeteoForecastResponse | null;
-}
-
-interface UseWeatherReturn {
-  data: WeatherData;
-  loading: boolean;
-  error: string | null;
-  searchWeather: (city: string) => Promise<void>;
-  reset: () => void;
-}
-
-export function useWeather(): UseWeatherReturn {
-  const [data, setData] = useState<WeatherData>({
-    location: null,
-    currentWeather: null,
-    forecast: null,
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const searchWeather = useCallback(async (city: string) => {
-    if (!city.trim()) {
-      setError('Por favor ingresa una ciudad');
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Step 1: Get location data
-      const location = await geocoding(city);
-      
-      // Step 2: Get current weather and forecast in parallel
-      const [currentWeather, forecast] = await Promise.all([
-        getCurrentWeather(location.latitude, location.longitude),
-        getForecast(location.latitude, location.longitude),
-      ]);
-
-      setData({
-        location,
-        currentWeather,
-        forecast,
-      });
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
-      setError(errorMessage);
-      setData({
-        location: null,
-        currentWeather: null,
-        forecast: null,
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const reset = useCallback(() => {
-    setData({
-      location: null,
-      currentWeather: null,
-      forecast: null,
-    });
-    setError(null);
-    setLoading(false);
-  }, []);
-
-  return {
-    data,
-    loading,
-    error,
-    searchWeather,
-    reset,
-  };
-} 
+export function useWeatherInitialization() {
+    const [isInitialized, setIsInitialized] = useState(false);
+  
+    const {
+      location,
+      currentWeather,
+      forecast,
+      loading,
+      error,
+      lastSearchedCity,
+      searchWeatherByLocation,
+      searchWeather,
+    } = useWeatherStore();
+  
+    const hasData = location && currentWeather && forecast;
+    const shouldAutoLoad = !hasData && !loading && !error;
+  
+    const initializeWeather = useCallback(async () => {
+      if (isInitialized) return;
+  
+      // Case 1: Data already exists
+      if (hasData) {
+        setIsInitialized(true);
+        return;
+      }
+  
+      // Case 2: Restore last searched city
+      if (lastSearchedCity && shouldAutoLoad) {
+        try {
+          await searchWeather(lastSearchedCity);
+        } catch {
+          console.log('No se pudo restaurar el clima de la última ciudad');
+        }
+        setIsInitialized(true);
+        return;
+      }
+  
+      // Case 3: Error exists, just initialize
+      if (error) {
+        setIsInitialized(true);
+        return;
+      }
+  
+      // Case 4: Try to get current location
+      if (shouldAutoLoad) {
+        try {
+          await searchWeatherByLocation();
+        } catch {
+          console.log('No se pudo obtener la ubicación actual');
+        }
+      }
+  
+      setIsInitialized(true);
+    }, [
+      isInitialized,
+      hasData,
+      lastSearchedCity,
+      loading,
+      error,
+      shouldAutoLoad,
+      searchWeather,
+      searchWeatherByLocation
+    ]);
+  
+    useEffect(() => {
+      initializeWeather();
+    }, [initializeWeather]);
+  
+    return { hasData, loading, error };
+  }

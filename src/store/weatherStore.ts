@@ -1,33 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { WeatherLocation, OpenMeteoCurrentResponse, OpenMeteoForecastResponse } from '@/types/weather.types';
-
-interface WeatherState {
-  // State
-  location: WeatherLocation | null;
-  currentWeather: OpenMeteoCurrentResponse | null;
-  forecast: OpenMeteoForecastResponse | null;
-  loading: boolean;
-  error: string | null;
-  lastSearchedCity: string | null;
-  searchHistory: string[];
-
-  // Actions
-  setLocation: (location: WeatherLocation | null) => void;
-  setCurrentWeather: (weather: OpenMeteoCurrentResponse | null) => void;
-  setForecast: (forecast: OpenMeteoForecastResponse | null) => void;
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
-  setLastSearchedCity: (city: string | null) => void;
-  addToSearchHistory: (city: string) => void;
-  clearSearchHistory: () => void;
-  reset: () => void;
-  
-  // Computed actions
-  searchWeather: (city: string) => Promise<void>;
-}
-
-const MAX_SEARCH_HISTORY = 10;
+import type { WeatherState } from '@/types/store.types';
+import { MAX_SEARCH_HISTORY } from '@/config/api.config';
 
 export const useWeatherStore = create<WeatherState>()(
   persist(
@@ -40,14 +14,6 @@ export const useWeatherStore = create<WeatherState>()(
       error: null,
       lastSearchedCity: null,
       searchHistory: [],
-
-      // Basic setters
-      setLocation: (location) => set({ location }),
-      setCurrentWeather: (currentWeather) => set({ currentWeather }),
-      setForecast: (forecast) => set({ forecast }),
-      setLoading: (loading) => set({ loading }),
-      setError: (error) => set({ error }),
-      setLastSearchedCity: (lastSearchedCity) => set({ lastSearchedCity }),
 
       // Search history actions
       addToSearchHistory: (city) => {
@@ -65,32 +31,19 @@ export const useWeatherStore = create<WeatherState>()(
 
       clearSearchHistory: () => set({ searchHistory: [] }),
 
-      // Reset all state
-      reset: () => set({
-        location: null,
-        currentWeather: null,
-        forecast: null,
-        loading: false,
-        error: null,
-      }),
-
       // Complex actions
       searchWeather: async (city) => {
-        const { setLoading, setError, setLocation, setCurrentWeather, setForecast, addToSearchHistory, setLastSearchedCity } = get();
-
         if (!city.trim()) {
-          setError('Por favor ingresa una ciudad');
+          set({ error: 'Por favor ingresa una ciudad' });
           return;
         }
 
-        setLoading(true);
-        setError(null);
+        set({ loading: true, error: null });
 
         try {
           // Import services dynamically to avoid circular dependencies
           const { geocoding } = await import('@/services/geocodingService');
-          const { getCurrentWeather } = await import('@/services/currentWeatherService');
-          const { getForecast } = await import('@/services/forecastService');
+          const { getCurrentWeather, getForecast } = await import('@/services/weatherService');
 
           // Step 1: Get location data
           const location = await geocoding(city);
@@ -102,20 +55,64 @@ export const useWeatherStore = create<WeatherState>()(
           ]);
 
           // Update state
-          setLocation(location);
-          setCurrentWeather(currentWeather);
-          setForecast(forecast);
-          setLastSearchedCity(city);
-          addToSearchHistory(city);
+          set({
+            location,
+            currentWeather,
+            forecast,
+            lastSearchedCity: city,
+            loading: false,
+            error: null,
+          });
+
+          // Add to search history
+          get().addToSearchHistory(city);
 
         } catch (err) {
           const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
-          setError(errorMessage);
-          setLocation(null);
-          setCurrentWeather(null);
-          setForecast(null);
-        } finally {
-          setLoading(false);
+          set({
+            error: errorMessage,
+            location: null,
+            currentWeather: null,
+            forecast: null,
+            loading: false,
+          });
+        }
+      },
+
+      searchWeatherByLocation: async () => {
+        set({ loading: true, error: null });
+
+        try {
+          // Import services dynamically to avoid circular dependencies
+          const { getCurrentPosition, getWeatherByCoordinates } = await import('@/services/geolocationService');
+
+          // Step 1: Get current position
+          const position = await getCurrentPosition();
+          
+          // Step 2: Get weather data by coordinates
+          const { location, currentWeather, forecast } = await getWeatherByCoordinates(
+            position.latitude,
+            position.longitude
+          );
+
+          // Update state
+          set({
+            location,
+            currentWeather,
+            forecast,
+            loading: false,
+            error: null,
+          });
+
+        } catch (err) {
+          const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+          set({
+            error: errorMessage,
+            location: null,
+            currentWeather: null,
+            forecast: null,
+            loading: false,
+          });
         }
       },
     }),
@@ -124,6 +121,10 @@ export const useWeatherStore = create<WeatherState>()(
       partialize: (state) => ({
         lastSearchedCity: state.lastSearchedCity,
         searchHistory: state.searchHistory,
+        location: state.location,
+        currentWeather: state.currentWeather,
+        forecast: state.forecast,
+        error: state.error,
       }),
     }
   )
