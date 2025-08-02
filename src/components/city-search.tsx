@@ -21,6 +21,7 @@ export const CitySearch = () => {
         handleHistoryClick,
         handleHistorySearch,
         searchRef,
+        searchError,
     } = useCitySearch();
 
     const { loading: globalLocationLoading } = useWeatherStore();
@@ -56,7 +57,7 @@ export const CitySearch = () => {
                 <>
                     {isSearching && query.trim().length >= 2 ? (
                         <SuggestionsSkeleton />
-                    ) : (suggestions.length > 0 || searchHistory.length > 0) && (
+                    ) : (suggestions.length > 0 || searchHistory.length > 0 || searchError) && (
                         <Card className="absolute z-10 w-full max-w-md mt-1 shadow-lg max-h-60 overflow-y-auto py-0">
                             <CardContent className="p-0">
                                 {suggestions.length > 0 && (
@@ -80,7 +81,14 @@ export const CitySearch = () => {
                                     </div>
                                 )}
 
-                                {searchHistory.length > 0 && suggestions.length === 0 && (
+                                {/* Mostrar error si no hay sugerencias y hay error */}
+                                {suggestions.length === 0 && searchError && (
+                                    <div className="px-3 py-4 text-center text-red-600 text-sm">
+                                        {searchError}
+                                    </div>
+                                )}
+
+                                {searchHistory.length > 0 && suggestions.length === 0 && !searchError && (
                                     <div>
                                         <div className="px-3 py-2 text-xs font-semibold text-gray-500 bg-gray-50 border-b flex items-center gap-2">
                                             Búsquedas recientes
