@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { getCurrentWeather } from '@/services/currentWeatherService';
+import { getCurrentWeather } from '@/services/weatherService';
 import type { OpenMeteoCurrentResponse, UseCurrentWeatherReturn } from '@/types/weather.types';
 
 
