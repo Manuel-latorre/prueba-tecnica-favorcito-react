@@ -25,7 +25,7 @@ export const CitySearch = () => {
 
     const { loading: globalLocationLoading } = useWeatherStore();
 
-    // Si está cargando la ubicación global, mostrar skeleton
+
     if (globalLocationLoading) {
         return <CitySearchSkeleton />;
     }
