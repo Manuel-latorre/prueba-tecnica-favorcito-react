@@ -78,33 +78,8 @@ export interface CitySuggestion {
   longitude: number;
 }
 
-export interface UseCurrentWeatherReturn {
-  weather: OpenMeteoCurrentResponse | null;
-  loading: boolean;
-  error: string | null;
-  fetchCurrentWeather: (lat: number, lon: number) => Promise<void>;
-  reset: () => void;
-}
-
-export interface UseForecastReturn {
-  forecast: OpenMeteoForecastResponse | null;
-  loading: boolean;
-  error: string | null;
-  fetchForecast: (lat: number, lon: number) => Promise<void>;
-  reset: () => void;
-}
-
-
 export interface WeatherData {
   location: WeatherLocation | null;
   currentWeather: OpenMeteoCurrentResponse | null;
   forecast: OpenMeteoForecastResponse | null;
-}
-
-export interface UseWeatherReturn {
-  data: WeatherData;
-  loading: boolean;
-  error: string | null;
-  searchWeather: (city: string) => Promise<void>;
-  reset: () => void;
 }
