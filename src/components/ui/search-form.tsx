@@ -9,7 +9,7 @@ interface SearchFormProps {
   placeholder?: string;
 }
 
-export function SearchForm({ onSearch, loading = false, placeholder = "Buscar ciudad..." }: SearchFormProps) {
+export function SearchForm({ onSearch, loading, placeholder }: SearchFormProps) {
   const [city, setCity] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
