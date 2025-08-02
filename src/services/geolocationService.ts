@@ -1,6 +1,6 @@
 import { type WeatherLocation } from "@/types/weather.types";
-import { getCurrentWeather, getForecast } from "./weatherService";
-import { reverseGeocodingNominatim } from "./geocodingService";
+import { getCurrentWeather, getForecast } from "@/services/weatherService";
+import { reverseGeocodingNominatim } from "@/services/geocodingService";
 import type { GeolocationPosition } from "@/types/geolocation.types";
 
 
