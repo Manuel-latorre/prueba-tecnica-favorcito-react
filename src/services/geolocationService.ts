@@ -1,7 +1,6 @@
 import { type WeatherLocation } from "@/types/weather.types";
-import { getCurrentWeather } from "./currentWeatherService";
-import { getForecast } from "./forecastService";
-import { reverseGeocoding, reverseGeocodingNominatim } from "./geocodingService";
+import { getCurrentWeather, getForecast } from "./weatherService";
+import { reverseGeocodingNominatim } from "./geocodingService";
 import type { GeolocationPosition } from "@/types/geolocation.types";
 
 
@@ -56,29 +55,22 @@ export async function getWeatherByCoordinates(
     let location: WeatherLocation;
     
     try {
-      // Primero intentar con Nominatim (permite CORS)
+      // Usar Nominatim para reverse geocoding
       location = await reverseGeocodingNominatim(latitude, longitude);
     } catch (nominatimError) {
-      console.warn("Nominatim falló, intentando con Open-Meteo:", nominatimError);
+      console.warn("No se pudo obtener el nombre de la ciudad:", nominatimError);
       
-      try {
-        // Fallback a Open-Meteo
-        location = await reverseGeocoding(latitude, longitude);
-      } catch (reverseGeocodingError) {
-        console.warn("No se pudo obtener el nombre de la ciudad, usando ubicación genérica:", reverseGeocodingError);
-        
-        // Fallback final: crear un objeto de ubicación genérico
-        location = {
-          id: 0,
-          name: "Tu ubicación actual",
-          latitude,
-          longitude,
-          country: "Local",
-          admin1: "",
-          admin2: "",
-          admin3: "",
-        };
-      }
+      // Fallback: crear un objeto de ubicación genérico
+      location = {
+        id: 0,
+        name: "Ubicación actual",
+        latitude,
+        longitude,
+        country: "Local",
+        admin1: "",
+        admin2: "",
+        admin3: "",
+      };
     }
 
     // Obtener clima actual y pronóstico en paralelo
