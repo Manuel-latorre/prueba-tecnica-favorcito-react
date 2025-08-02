@@ -11,15 +11,8 @@ export interface WeatherState {
     searchHistory: string[];
   
     // Actions
-    setLocation: (location: WeatherLocation | null) => void;
-    setCurrentWeather: (weather: OpenMeteoCurrentResponse | null) => void;
-    setForecast: (forecast: OpenMeteoForecastResponse | null) => void;
-    setLoading: (loading: boolean) => void;
-    setError: (error: string | null) => void;
-    setLastSearchedCity: (city: string | null) => void;
     addToSearchHistory: (city: string) => void;
     clearSearchHistory: () => void;
-    reset: () => void;
     
     // Computed actions
     searchWeather: (city: string) => Promise<void>;
