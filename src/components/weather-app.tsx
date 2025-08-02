@@ -1,12 +1,9 @@
 import { useWeatherStore } from '@/store/weatherStore';
-import { SearchForm } from '@/components/ui/search-form';
-import { CurrentWeather } from '@/components/ui/current-weather';
-import { WeatherForecast } from '@/components/ui/weather-forecast';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { ErrorMessage } from '@/components/ui/error-message';
-import { SearchHistory } from '@/components/ui/search-history';
+import { SearchForm, CurrentWeather, WeatherForecast, LoadingSpinner, ErrorMessage, SearchHistory } from '@/components/index';
 import { MapPin } from 'lucide-react';
 import { useEffect } from 'react';
+
+
 
 export function WeatherApp() {
   const {
