@@ -30,7 +30,7 @@ export const CitySearch = () => {
     }
 
     return (
-        <div className="w-full max-w-md mx-auto" ref={searchRef}>
+        <div className="search-container" ref={searchRef}>
             <div className="relative">
                 <Input
                     type="text"
@@ -38,7 +38,7 @@ export const CitySearch = () => {
                     onChange={(e) => handleInputChange(e.target.value)}
                     onFocus={handleInputFocus}
                     placeholder="Buscar ciudad..."
-                    className="w-full max-w-lg pl-10 pr-4 rounded-full focus:border-0"
+                    className="search-input"
                     disabled={isSearching || globalLocationLoading}
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
