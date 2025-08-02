@@ -6,6 +6,7 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { SearchHistory } from '@/components/ui/search-history';
 import { Cloud, MapPin } from 'lucide-react';
+import { useEffect } from 'react';
 
 export function WeatherApp() {
   const {
@@ -16,13 +17,25 @@ export function WeatherApp() {
     error,
     searchHistory,
     searchWeather,
+    searchWeatherByLocation,
     reset,
     clearSearchHistory,
   } = useWeatherStore();
 
   // Computed values
   const hasData = location && currentWeather && forecast;
-  const isEmpty = !location && !loading && !error;
+  const isEmpty = !location && !loading && !error && !hasData;
+
+  // Cargar ubicación actual al montar el componente
+  useEffect(() => {
+    // Solo cargar si no hay datos, no está cargando y no hay error
+    if (isEmpty && !loading && !error) {
+      searchWeatherByLocation().catch(() => {
+        // Si falla la geolocalización, no mostrar error, solo dejar que el usuario busque manualmente
+        console.log('No se pudo obtener la ubicación actual');
+      });
+    }
+  }, [isEmpty, loading, error, searchWeatherByLocation]); // Dependencias para evitar re-ejecuciones innecesarias
 
   const handleSearch = async (city: string) => {
     await searchWeather(city);
@@ -45,16 +58,6 @@ export function WeatherApp() {
   return (
     <div className="h-dvh flex flex-col items-center justify-center">
       <div className="max-w-4xl mx-auto space-y-6 w-full">
-        {/* Header */}
-        <div className="text-center space-y-2">
-          <div className="flex items-center justify-center gap-2">
-            <Cloud className="h-8 w-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900">Clima App</h1>
-          </div>
-          <p className="text-gray-600">Busca el clima de cualquier ciudad del mundo</p>
-        </div>
-
-        {/* Search Form */}
         <div className="flex justify-center">
           <SearchForm 
             onSearch={handleSearch} 
@@ -63,7 +66,6 @@ export function WeatherApp() {
           />
         </div>
 
-        {/* Loading State */}
         {loading && (
           <div className="flex justify-center">
             <LoadingSpinner 
@@ -90,53 +92,41 @@ export function WeatherApp() {
           <div className="max-w-md mx-auto">
             <ErrorMessage 
               message={error} 
-              onRetry={handleRetry}
             />
           </div>
         )}
 
         {/* Weather Data */}
         {hasData && !loading && (
-          <div className="space-y-6">
-            {/* Current Weather */}
-            <div className="flex justify-center">
-              <CurrentWeather 
+          
+              <div className='flex'>
+                <CurrentWeather 
                 weather={currentWeather!}
                 cityName={location!.name}
               />
-            </div>
 
-            {/* Forecast */}
-            <div className="max-w-2xl mx-auto">
               <WeatherForecast forecast={forecast!} />
-            </div>
+              </div>
 
-            {/* Reset Button */}
-            <div className="flex justify-center">
-              <button
-                onClick={handleReset}
-                className="text-sm text-gray-500 hover:text-gray-700 underline"
-              >
-                Buscar otra ciudad
-              </button>
-            </div>
-          </div>
+            
         )}
 
-        {/* Empty State */}
+        
         {isEmpty && (
           <div className="text-center space-y-4 py-12">
             <MapPin className="h-16 w-16 text-gray-300 mx-auto" />
             <div>
               <h3 className="text-lg font-medium text-gray-900">
-                Busca una ciudad
+                Obteniendo tu ubicación actual...
               </h3>
               <p className="text-gray-500 mt-1">
-                Ingresa el nombre de una ciudad para ver el clima actual y el pronóstico
+                Si no se puede obtener tu ubicación, busca una ciudad para ver el clima
               </p>
             </div>
           </div>
         )}
+
+        
       </div>
     </div>
   );
