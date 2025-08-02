@@ -6,7 +6,7 @@ import {
   WeatherForecastSkeleton,
   CitySearchSkeleton
 } from '@/components/index';
-import WeatherDataDisplay from './weather-data';
+import WeatherDataDisplay from '@/components/weather/weather-data';
 import { useWeatherInitialization } from '@/hooks/useWeather';
 
 
