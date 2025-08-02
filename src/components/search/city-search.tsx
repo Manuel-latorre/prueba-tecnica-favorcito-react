@@ -1,8 +1,8 @@
 import { CitySearchSuggestions, CitySearchSkeleton, LoadingSpinner, SuggestionsSkeleton } from '@/components';
 import { useCitySearch } from '@/hooks/useCitySearch';
 import { useWeatherStore } from '@/store/weatherStore';
-import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 
 
@@ -30,7 +30,7 @@ export const CitySearch = () => {
 
     return (
         <div className="w-full max-w-md mx-auto" ref={searchRef}>
-            <div className="relative">
+            <div className="relative w-full">
                 <Input
                     type="text"
                     value={query}
