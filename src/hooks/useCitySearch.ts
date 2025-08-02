@@ -21,7 +21,7 @@ export const useCitySearch = () => {
       } else {
         setSuggestions([]);
       }
-    }, 300);
+    }, 700);
 
     return () => clearTimeout(timeoutId);
   }, [query]);
@@ -93,10 +93,11 @@ export const useCitySearch = () => {
     await searchWeather(city.name);
   }, [addToSearchHistory, searchWeather]);
 
-  const handleHistoryClick = useCallback((cityName: string) => {
+  const handleHistoryClick = useCallback(async (cityName: string) => {
     setQuery(cityName);
     setShowSuggestions(false);
-  }, []);
+    await searchWeather(cityName);
+  }, [searchWeather]);
 
   const handleHistorySearch = useCallback(async (cityName: string) => {
     setQuery(cityName);
