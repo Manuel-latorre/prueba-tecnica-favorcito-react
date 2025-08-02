@@ -1,5 +1,5 @@
 import { useWeatherStore } from '@/store/weatherStore';
-import { CitySearch, CurrentWeather, WeatherForecast, LoadingSpinner, ErrorMessage } from '@/components/index';
+import { CitySearch, CurrentWeather, WeatherForecast, ErrorMessage } from '@/components/index';
 import { MapPin } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -36,12 +36,6 @@ export function WeatherApp() {
         <div className="flex justify-center">
           <CitySearch />
         </div>
-
-        {loading && (
-          <div className="flex justify-center">
-            <LoadingSpinner size="lg" />
-          </div>
-        )}
 
         {error && (
           <div className="max-w-md mx-auto flex justify-center">
