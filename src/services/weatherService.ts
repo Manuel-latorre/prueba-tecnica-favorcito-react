@@ -39,12 +39,7 @@ export async function getCurrentWeather(
   );
 }
 
-/**
- * Obtiene el pronóstico del clima para una ubicación específica
- * @param lat - Latitud de la ubicación
- * @param lon - Longitud de la ubicación
- * @returns Datos del pronóstico del clima
- */
+
 export async function getForecast(
   lat: number,
   lon: number
@@ -56,12 +51,7 @@ export async function getForecast(
   );
 }
 
-/**
- * Obtiene tanto el clima actual como el pronóstico en una sola petición
- * @param lat - Latitud de la ubicación
- * @param lon - Longitud de la ubicación
- * @returns Datos del clima actual y pronóstico
- */
+
 export async function getWeatherData(
   lat: number,
   lon: number
