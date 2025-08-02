@@ -5,7 +5,7 @@ import { WeatherForecast } from '@/components/ui/weather-forecast';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { ErrorMessage } from '@/components/ui/error-message';
 import { SearchHistory } from '@/components/ui/search-history';
-import { Cloud, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { useEffect } from 'react';
 
 export function WeatherApp() {
@@ -18,7 +18,6 @@ export function WeatherApp() {
     searchHistory,
     searchWeather,
     searchWeatherByLocation,
-    reset,
     clearSearchHistory,
   } = useWeatherStore();
 
@@ -41,26 +40,17 @@ export function WeatherApp() {
     await searchWeather(city);
   };
 
-  const handleRetry = () => {
-    if (location) {
-      searchWeather(location.name);
-    }
-  };
-
-  const handleReset = () => {
-    reset();
-  };
 
   const handleClearHistory = () => {
     clearSearchHistory();
   };
 
   return (
-    <div className="h-dvh flex flex-col items-center justify-center">
+    <div className="min-h-dvh flex flex-col items-center justify-center max-md:p-4 py-8">
       <div className="max-w-4xl mx-auto space-y-6 w-full">
         <div className="flex justify-center">
-          <SearchForm 
-            onSearch={handleSearch} 
+          <SearchForm
+            onSearch={handleSearch}
             loading={loading}
             placeholder="Ej: Madrid, Barcelona, Londres..."
           />
@@ -68,9 +58,9 @@ export function WeatherApp() {
 
         {loading && (
           <div className="flex justify-center">
-            <LoadingSpinner 
-              size="lg" 
-              text="Obteniendo información del clima..." 
+            <LoadingSpinner
+              size="lg"
+              text="Obteniendo información del clima..."
             />
           </div>
         )}
@@ -87,31 +77,26 @@ export function WeatherApp() {
           </div>
         )}
 
-        {/* Error State */}
         {error && (
           <div className="max-w-md mx-auto">
-            <ErrorMessage 
-              message={error} 
+            <ErrorMessage
+              message={error}
             />
           </div>
         )}
 
-        {/* Weather Data */}
         {hasData && !loading && (
-          
-              <div className='flex'>
-                <CurrentWeather 
-                weather={currentWeather!}
-                cityName={location!.name}
-              />
+          <div className='flex flex-col gap-4 w-full justify-center items-center'>
+            <CurrentWeather
+              weather={currentWeather!}
+              cityName={location!.name}
+            />
+            <WeatherForecast forecast={forecast!} />
+          </div>
 
-              <WeatherForecast forecast={forecast!} />
-              </div>
 
-            
         )}
 
-        
         {isEmpty && (
           <div className="text-center space-y-4 py-12">
             <MapPin className="h-16 w-16 text-gray-300 mx-auto" />
@@ -126,7 +111,7 @@ export function WeatherApp() {
           </div>
         )}
 
-        
+
       </div>
     </div>
   );
