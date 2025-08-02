@@ -2,21 +2,8 @@ import { useState, useCallback } from 'react';
 import { geocoding } from '@/services/geocodingService';
 import { getCurrentWeather } from '@/services/currentWeatherService';
 import { getForecast } from '@/services/forecastService';
-import type { WeatherLocation, OpenMeteoCurrentResponse, OpenMeteoForecastResponse } from '@/types/weather.types';
+import type { UseWeatherReturn, WeatherData } from '@/types/weather.types';
 
-interface WeatherData {
-  location: WeatherLocation | null;
-  currentWeather: OpenMeteoCurrentResponse | null;
-  forecast: OpenMeteoForecastResponse | null;
-}
-
-interface UseWeatherReturn {
-  data: WeatherData;
-  loading: boolean;
-  error: string | null;
-  searchWeather: (city: string) => Promise<void>;
-  reset: () => void;
-}
 
 export function useWeather(): UseWeatherReturn {
   const [data, setData] = useState<WeatherData>({
