@@ -68,3 +68,43 @@ export interface CurrentWeatherProps {
 export interface WeatherForecastProps {
   forecast: OpenMeteoForecastResponse;
 }
+
+export interface CitySuggestion {
+  id: string;
+  name: string;
+  admin1?: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+}
+
+export interface UseCurrentWeatherReturn {
+  weather: OpenMeteoCurrentResponse | null;
+  loading: boolean;
+  error: string | null;
+  fetchCurrentWeather: (lat: number, lon: number) => Promise<void>;
+  reset: () => void;
+}
+
+export interface UseForecastReturn {
+  forecast: OpenMeteoForecastResponse | null;
+  loading: boolean;
+  error: string | null;
+  fetchForecast: (lat: number, lon: number) => Promise<void>;
+  reset: () => void;
+}
+
+
+export interface WeatherData {
+  location: WeatherLocation | null;
+  currentWeather: OpenMeteoCurrentResponse | null;
+  forecast: OpenMeteoForecastResponse | null;
+}
+
+export interface UseWeatherReturn {
+  data: WeatherData;
+  loading: boolean;
+  error: string | null;
+  searchWeather: (city: string) => Promise<void>;
+  reset: () => void;
+}
