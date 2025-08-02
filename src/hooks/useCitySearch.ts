@@ -2,13 +2,12 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useWeatherStore } from '@/store/weatherStore';
 import type { CitySuggestion } from '@/types/weather.types';
 
-
-
 export const useCitySearch = () => {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
   const searchRef = useRef<HTMLDivElement>(null);
   
   const { searchHistory, addToSearchHistory, searchWeather } = useWeatherStore();
@@ -20,6 +19,7 @@ export const useCitySearch = () => {
         searchCities(query.trim());
       } else {
         setSuggestions([]);
+        setSearchError(null);
       }
     }, 700);
 
@@ -42,12 +42,11 @@ export const useCitySearch = () => {
 
   const searchCities = async (searchTerm: string) => {
     if (searchTerm.length < 2) return;
-
     setIsSearching(true);
+    setSearchError(null);
     try {
       const { geocodingSuggestions } = await import('@/services/geocodingService');
       const results = await geocodingSuggestions(searchTerm);
-      
       // Transform results to match CitySuggestion interface
       const suggestions = results.map((result: any) => ({
         id: `${result.latitude}-${result.longitude}`,
@@ -57,10 +56,14 @@ export const useCitySearch = () => {
         latitude: result.latitude,
         longitude: result.longitude,
       }));
-
       setSuggestions(suggestions);
+      if (suggestions.length === 0) {
+        setSearchError('Ciudad no encontrada');
+      } else {
+        setSearchError(null);
+      }
     } catch (error) {
-      console.error('Error searching cities:', error);
+      setSearchError('Error buscando ciudades');
       setSuggestions([]);
     } finally {
       setIsSearching(false);
@@ -74,6 +77,7 @@ export const useCitySearch = () => {
     } else {
       setShowSuggestions(false);
       setSuggestions([]);
+      setSearchError(null);
     }
   }, []);
 
@@ -87,7 +91,7 @@ export const useCitySearch = () => {
     setQuery(city.name);
     setShowSuggestions(false);
     setSuggestions([]);
-    
+    setSearchError(null);
     // Add to search history and search
     addToSearchHistory(city.name);
     await searchWeather(city.name);
@@ -96,12 +100,14 @@ export const useCitySearch = () => {
   const handleHistoryClick = useCallback(async (cityName: string) => {
     setQuery(cityName);
     setShowSuggestions(false);
+    setSearchError(null);
     await searchWeather(cityName);
   }, [searchWeather]);
 
   const handleHistorySearch = useCallback(async (cityName: string) => {
     setQuery(cityName);
     setShowSuggestions(false);
+    setSearchError(null);
     await searchWeather(cityName);
   }, [searchWeather]);
 
@@ -117,5 +123,6 @@ export const useCitySearch = () => {
     handleHistoryClick,
     handleHistorySearch,
     searchRef,
+    searchError,
   };
 }; 
