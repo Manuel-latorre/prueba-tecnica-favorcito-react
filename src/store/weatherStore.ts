@@ -41,14 +41,14 @@ export const useWeatherStore = create<WeatherState>()(
         set({ loading: true, error: null });
 
         try {
-          // Import services dynamically to avoid circular dependencies
+          
           const { geocoding } = await import('@/services/geocodingService');
           const { getCurrentWeather, getForecast } = await import('@/services/weatherService');
 
-          // Step 1: Get location data
+          
           const location = await geocoding(city);
           
-          // Step 2: Get current weather and forecast in parallel
+          
           const [currentWeather, forecast] = await Promise.all([
             getCurrentWeather(location.latitude, location.longitude),
             getForecast(location.latitude, location.longitude),
@@ -64,7 +64,7 @@ export const useWeatherStore = create<WeatherState>()(
             error: null,
           });
 
-          // Add to search history
+          
           get().addToSearchHistory(city);
 
         } catch (err) {
@@ -83,13 +83,13 @@ export const useWeatherStore = create<WeatherState>()(
         set({ loading: true, error: null });
 
         try {
-          // Import services dynamically to avoid circular dependencies
+         
           const { getCurrentPosition, getWeatherByCoordinates } = await import('@/services/geolocationService');
 
-          // Step 1: Get current position
+          
           const position = await getCurrentPosition();
           
-          // Step 2: Get weather data by coordinates
+          
           const { location, currentWeather, forecast } = await getWeatherByCoordinates(
             position.latitude,
             position.longitude
