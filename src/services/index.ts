@@ -1,5 +1,4 @@
 // Export all weather services
-export { geocoding, reverseGeocoding, reverseGeocodingNominatim } from '@/services/geocodingService';
-export { getCurrentWeather } from '@/services/currentWeatherService';
-export { getForecast } from '@/services/forecastService';
+export { geocoding, reverseGeocodingNominatim } from '@/services/geocodingService';
+export { getCurrentWeather, getForecast, getWeatherData } from '@/services/weatherService';
 export { getCurrentPosition, getWeatherByCoordinates } from '@/services/geolocationService'; 
