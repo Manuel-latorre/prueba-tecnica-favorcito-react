@@ -4,16 +4,16 @@ import { MapPin } from 'lucide-react';
 
 export function CurrentWeatherSkeleton() {
   return (
-    <Card className="w-full max-w-md">
+    <Card className="card-max-width">
       <CardHeader className="">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <MapPin className="h-5 w-5 text-muted-foreground" />
+        <CardTitle className="flex-center-gap-2 text-lg">
+          <MapPin className="icon-muted-md" />
           <Skeleton className="h-6 w-32" />
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex-between">
+          <div className="flex-center-gap-2">
             <Skeleton className="h-8 w-8" />
             <div>
               <Skeleton className="h-8 w-16 mb-1" />
@@ -22,8 +22,8 @@ export function CurrentWeatherSkeleton() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex-between">
+          <div className="flex-center-gap-2">
             <Skeleton className="h-4 w-4" />
             <div>
               <Skeleton className="h-4 w-16 mb-1" />
@@ -31,7 +31,7 @@ export function CurrentWeatherSkeleton() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex-center-gap-2">
             <Skeleton className="h-4 w-20" />
           </div>
         </div>
