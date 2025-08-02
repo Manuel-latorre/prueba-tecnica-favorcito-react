@@ -86,3 +86,11 @@ export interface WeatherData {
   currentWeather: OpenMeteoCurrentResponse | null;
   forecast: OpenMeteoForecastResponse | null;
 }
+
+export interface CitySearchSuggestionsProps {
+  suggestions: CitySuggestion[];
+  searchError: string | null;
+  searchHistory: string[];
+  onCitySelect: (city: CitySuggestion) => void;
+  onHistorySelect: (cityName: string) => void;
+}
