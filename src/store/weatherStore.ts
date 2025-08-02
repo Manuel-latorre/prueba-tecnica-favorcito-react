@@ -1,34 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { WeatherLocation, OpenMeteoCurrentResponse, OpenMeteoForecastResponse } from '@/types/weather.types';
-
-interface WeatherState {
-  // State
-  location: WeatherLocation | null;
-  currentWeather: OpenMeteoCurrentResponse | null;
-  forecast: OpenMeteoForecastResponse | null;
-  loading: boolean;
-  error: string | null;
-  lastSearchedCity: string | null;
-  searchHistory: string[];
-
-  // Actions
-  setLocation: (location: WeatherLocation | null) => void;
-  setCurrentWeather: (weather: OpenMeteoCurrentResponse | null) => void;
-  setForecast: (forecast: OpenMeteoForecastResponse | null) => void;
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
-  setLastSearchedCity: (city: string | null) => void;
-  addToSearchHistory: (city: string) => void;
-  clearSearchHistory: () => void;
-  reset: () => void;
-  
-  // Computed actions
-  searchWeather: (city: string) => Promise<void>;
-  searchWeatherByLocation: () => Promise<void>;
-}
-
-const MAX_SEARCH_HISTORY = 10;
+import type { WeatherState } from '@/types/store.types';
+import { MAX_SEARCH_HISTORY } from '@/config/api.config';
 
 export const useWeatherStore = create<WeatherState>()(
   persist(
