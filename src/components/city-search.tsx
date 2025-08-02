@@ -18,8 +18,7 @@ export const CitySearch = () => {
         handleInputChange,
         handleInputFocus,
         handleCitySelect,
-        handleHistoryClick,
-        handleHistorySearch,
+        handleHistorySelect,
         searchRef,
         searchError,
     } = useCitySearch();
@@ -99,13 +98,13 @@ export const CitySearch = () => {
                                                 className="flex items-center justify-between px-3 py-2 hover:bg-gray-100 transition-colors duration-150"
                                             >
                                                 <button
-                                                    onClick={() => handleHistoryClick(cityName)}
+                                                    onClick={() => handleHistorySelect(cityName)}
                                                     className="flex-1 text-left focus:outline-none"
                                                 >
                                                     <div className="font-medium text-gray-900">{cityName}</div>
                                                 </button>
                                                 <button
-                                                    onClick={() => handleHistorySearch(cityName)}
+                                                    onClick={() => handleHistorySelect(cityName)}
                                                     className="ml-2 p-1 text-gray-400 hover:text-blue-600 transition-colors duration-150"
                                                     title="Buscar esta ciudad"
                                                 >
