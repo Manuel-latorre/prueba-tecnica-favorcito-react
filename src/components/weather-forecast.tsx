@@ -1,13 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, ThermometerSun, ThermometerSnowflake } from 'lucide-react';
-import type { OpenMeteoForecastResponse } from '@/types/weather.types';
 import { getWeatherInfo } from '@/utils/weatherCodes';
 import { formatDate } from '@/utils/functions';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
-interface WeatherForecastProps {
-  forecast: OpenMeteoForecastResponse;
-}
+import type { WeatherForecastProps } from '@/types/weather.types';
 
 
 export function WeatherForecast({ forecast }: WeatherForecastProps) {
