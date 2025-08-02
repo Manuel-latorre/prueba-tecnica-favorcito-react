@@ -20,8 +20,8 @@ export function WeatherApp() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="h-dvh flex flex-col items-center justify-center">
+      <div className="max-w-4xl mx-auto space-y-6 w-full">
         {/* Header */}
         <div className="text-center space-y-2">
           <div className="flex items-center justify-center gap-2">
