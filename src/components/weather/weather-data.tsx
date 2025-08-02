@@ -1,6 +1,6 @@
 import type { OpenMeteoCurrentResponse, OpenMeteoForecastResponse } from "@/types/weather.types";
-import { CurrentWeather } from "./current-weather";
-import { WeatherForecast } from "./weather-forecast";
+import { CurrentWeather } from "@/components/weather/current-weather";
+import { WeatherForecast } from "@/components/weather/weather-forecast";
 
 export default function WeatherDataDisplay({
     currentWeather,
