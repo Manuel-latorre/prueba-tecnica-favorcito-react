@@ -2,12 +2,8 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, Loader2 } from 'lucide-react';
+import type { SearchFormProps } from '@/types/search-form.types';
 
-interface SearchFormProps {
-  onSearch: (city: string) => void;
-  loading?: boolean;
-  placeholder?: string;
-}
 
 export function SearchForm({ onSearch, loading, placeholder }: SearchFormProps) {
   const [city, setCity] = useState('');
