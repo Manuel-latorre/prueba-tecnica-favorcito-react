@@ -11,34 +11,34 @@ export function CurrentWeather({ weather, cityName }: CurrentWeatherProps) {
   const weatherInfo = getWeatherInfo(current.weather_code);
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="card-max-width">
       <CardHeader className="">
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <MapPin className="h-5 w-5 text-muted-foreground" />
+        <CardTitle className="flex-center-gap-2 text-lg">
+          <MapPin className="icon-muted-md" />
           {cityName}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+        <div className="flex-between">
+          <div className="flex-center-gap-2">
             <span className="text-3xl">{weatherInfo.icon}</span>
             <div>
               <p className="text-2xl font-bold">{current.temperature_2m}°C</p>
-              <p className="text-sm text-muted-foreground">{weatherInfo.description}</p>
+              <p className="text-muted-sm">{weatherInfo.description}</p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Wind className="h-4 w-4 text-muted-foreground" />
+        <div className="flex-between">
+          <div className="flex-center-gap-2">
+            <Wind className="icon-muted-sm" />
             <div>
               <p className="text-sm font-medium">{current.wind_speed_10m} km/h</p>
-              <p className="text-xs text-muted-foreground">Viento</p>
+              <p className="text-muted-xs">Viento</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex-center-gap-2">
             <p className="text-sm font-medium">{formatDateTime(current.time)}</p>
           </div>
         </div>
