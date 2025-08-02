@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { getForecast } from '@/services/forecastService';
+import { getForecast } from '@/services/weatherService';
 import type { OpenMeteoForecastResponse, UseForecastReturn } from '@/types/weather.types';
 
 
