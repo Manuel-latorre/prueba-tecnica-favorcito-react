@@ -1,15 +1,13 @@
-import { AlertCircle } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+
 import type { ErrorMessageProps } from '@/types/errors.types';
 
 
 export function ErrorMessage({ message }: ErrorMessageProps) {
   return (
-    <Alert variant="destructive">
-      <AlertCircle className="h-4 w-4" />
-      <AlertDescription className="flex items-center justify-between">
-        <span>{message}</span>
-      </AlertDescription>
-    </Alert>
+
+    <div className="w-fit border border-red-300 bg-red-50 px-4 py-0.5 rounded-full">
+      <p className="text-sm text-red-700">{message}</p>
+    </div>
+
   );
 } 
