@@ -1,8 +1,8 @@
+import type { CitySearchSuggestionsProps } from "@/types/weather.types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { History } from "lucide-react";
-import type { CitySearchSuggestionsProps } from "@/types/weather.types";
-import { ErrorMessage } from "../errors/error-message";
+import { ErrorMessage } from "@/components/errors/error-message";
 
 
 export function CitySearchSuggestions({
