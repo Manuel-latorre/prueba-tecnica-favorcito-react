@@ -10,8 +10,6 @@ import {
 } from '@/components/index';
 import { useEffect, useState } from 'react';
 
-
-
 export function WeatherApp() {
   const [isInitialized, setIsInitialized] = useState(false);
   
@@ -41,6 +39,7 @@ export function WeatherApp() {
     }
 
     // Si hay una última ciudad buscada pero no hay datos, restaurarla
+    // Solo intentar restaurar si no hay error persistido
     if (lastSearchedCity && !hasData && !loading && !error) {
       searchWeather(lastSearchedCity).catch(() => {
         console.log('No se pudo restaurar el clima de la última ciudad');
@@ -49,7 +48,13 @@ export function WeatherApp() {
       return;
     }
 
-    // Solo cargar ubicación automática si no hay datos persistidos y no está cargando
+    // Si hay un error persistido, solo inicializar sin hacer nada más
+    if (error) {
+      setIsInitialized(true);
+      return;
+    }
+
+    // Solo cargar ubicación automática si no hay datos persistidos, no está cargando y no hay error
     if (isEmpty && !loading && !error) {
       searchWeatherByLocation().catch(() => {
         // Si falla la geolocalización, no mostrar error, solo dejar que el usuario busque manualmente
@@ -68,7 +73,7 @@ export function WeatherApp() {
         </div>
 
         {error && (
-          <div className="max-w-md mx-auto flex justify-center">
+          <div className="max-w-md mx-auto flex justify-center mb-4">
             <ErrorMessage message={error} />
           </div>
         )}
