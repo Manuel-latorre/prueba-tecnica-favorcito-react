@@ -1,11 +1,10 @@
-import { useCitySearch } from '../../hooks/useCitySearch';
-import { Input } from '../ui/input';
-import { LoadingSpinner } from '../ui/loading-spinner';
-import { useWeatherStore } from '../../store/weatherStore';
+import { CitySearchSuggestions, CitySearchSkeleton, LoadingSpinner, SuggestionsSkeleton } from '@/components';
+import { useCitySearch } from '@/hooks/useCitySearch';
+import { useWeatherStore } from '@/store/weatherStore';
+import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { CitySearchSkeleton } from '../ui/skeletons/city-search-skeleton';
-import { SuggestionsSkeleton } from '../ui/skeletons/suggestions-skeleton';
-import { CitySearchSuggestions } from './city-search-suggestions';
+
+
 
 export const CitySearch = () => {
     const {
