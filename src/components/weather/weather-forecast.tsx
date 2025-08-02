@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Calendar, ThermometerSun, ThermometerSnowflake } from 'lucide-react';
 import { getWeatherInfo } from '@/utils/weatherCodes';
 import { formatDate } from '@/utils/functions';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import type { WeatherForecastProps } from '@/types/weather.types';
 
 
@@ -18,8 +17,7 @@ export function WeatherForecast({ forecast }: WeatherForecastProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="rounded-md">
-          <div className='flex flex-col gap-2 h-full max-h-[500px]'>
+          <div className='flex flex-col gap-2 h-full'>
           {daily.time.map((date, index) => {
             const weatherInfo = getWeatherInfo(daily.weather_code[index]);
             const maxTemp = daily.temperature_2m_max[index];
@@ -52,7 +50,6 @@ export function WeatherForecast({ forecast }: WeatherForecastProps) {
             );
           })}
           </div>
-        </ScrollArea>
       </CardContent>
     </Card>
   );
