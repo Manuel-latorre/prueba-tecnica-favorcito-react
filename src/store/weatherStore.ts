@@ -136,6 +136,7 @@ export const useWeatherStore = create<WeatherState>()(
         location: state.location,
         currentWeather: state.currentWeather,
         forecast: state.forecast,
+        error: state.error,
       }),
     }
   )
