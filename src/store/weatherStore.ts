@@ -15,14 +15,6 @@ export const useWeatherStore = create<WeatherState>()(
       lastSearchedCity: null,
       searchHistory: [],
 
-      // Basic setters
-      setLocation: (location) => set({ location }),
-      setCurrentWeather: (currentWeather) => set({ currentWeather }),
-      setForecast: (forecast) => set({ forecast }),
-      setLoading: (loading) => set({ loading }),
-      setError: (error) => set({ error }),
-      setLastSearchedCity: (lastSearchedCity) => set({ lastSearchedCity }),
-
       // Search history actions
       addToSearchHistory: (city) => {
         const { searchHistory } = get();
@@ -39,32 +31,19 @@ export const useWeatherStore = create<WeatherState>()(
 
       clearSearchHistory: () => set({ searchHistory: [] }),
 
-      // Reset all state
-      reset: () => set({
-        location: null,
-        currentWeather: null,
-        forecast: null,
-        loading: false,
-        error: null,
-      }),
-
       // Complex actions
       searchWeather: async (city) => {
-        const { setLoading, setError, setLocation, setCurrentWeather, setForecast, addToSearchHistory, setLastSearchedCity } = get();
-
         if (!city.trim()) {
-          setError('Por favor ingresa una ciudad');
+          set({ error: 'Por favor ingresa una ciudad' });
           return;
         }
 
-        setLoading(true);
-        setError(null);
+        set({ loading: true, error: null });
 
         try {
           // Import services dynamically to avoid circular dependencies
           const { geocoding } = await import('@/services/geocodingService');
-          const { getCurrentWeather } = await import('@/services/currentWeatherService');
-          const { getForecast } = await import('@/services/forecastService');
+          const { getCurrentWeather, getForecast } = await import('@/services/weatherService');
 
           // Step 1: Get location data
           const location = await geocoding(city);
@@ -76,28 +55,32 @@ export const useWeatherStore = create<WeatherState>()(
           ]);
 
           // Update state
-          setLocation(location);
-          setCurrentWeather(currentWeather);
-          setForecast(forecast);
-          setLastSearchedCity(city);
-          addToSearchHistory(city);
+          set({
+            location,
+            currentWeather,
+            forecast,
+            lastSearchedCity: city,
+            loading: false,
+            error: null,
+          });
+
+          // Add to search history
+          get().addToSearchHistory(city);
 
         } catch (err) {
           const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
-          setError(errorMessage);
-          setLocation(null);
-          setCurrentWeather(null);
-          setForecast(null);
-        } finally {
-          setLoading(false);
+          set({
+            error: errorMessage,
+            location: null,
+            currentWeather: null,
+            forecast: null,
+            loading: false,
+          });
         }
       },
 
       searchWeatherByLocation: async () => {
-        const { setLoading, setError, setLocation, setCurrentWeather, setForecast } = get();
-
-        setLoading(true);
-        setError(null);
+        set({ loading: true, error: null });
 
         try {
           // Import services dynamically to avoid circular dependencies
@@ -113,18 +96,23 @@ export const useWeatherStore = create<WeatherState>()(
           );
 
           // Update state
-          setLocation(location);
-          setCurrentWeather(currentWeather);
-          setForecast(forecast);
+          set({
+            location,
+            currentWeather,
+            forecast,
+            loading: false,
+            error: null,
+          });
 
         } catch (err) {
           const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
-          setError(errorMessage);
-          setLocation(null);
-          setCurrentWeather(null);
-          setForecast(null);
-        } finally {
-          setLoading(false);
+          set({
+            error: errorMessage,
+            location: null,
+            currentWeather: null,
+            forecast: null,
+            loading: false,
+          });
         }
       },
     }),
