@@ -97,14 +97,7 @@ export const useCitySearch = () => {
     await searchWeather(city.name);
   }, [addToSearchHistory, searchWeather]);
 
-  const handleHistoryClick = useCallback(async (cityName: string) => {
-    setQuery(cityName);
-    setShowSuggestions(false);
-    setSearchError(null);
-    await searchWeather(cityName);
-  }, [searchWeather]);
-
-  const handleHistorySearch = useCallback(async (cityName: string) => {
+  const handleHistorySelect = useCallback(async (cityName: string) => {
     setQuery(cityName);
     setShowSuggestions(false);
     setSearchError(null);
@@ -120,8 +113,7 @@ export const useCitySearch = () => {
     handleInputChange,
     handleInputFocus,
     handleCitySelect,
-    handleHistoryClick,
-    handleHistorySearch,
+    handleHistorySelect,
     searchRef,
     searchError,
   };
