@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin, Wind } from 'lucide-react';
 import type { CurrentWeatherProps } from '@/types/weather.types';
 import { getWeatherInfo } from '@/utils/weatherCodes';
-import { formatDate } from '@/utils/functions';
+import { formatDateTime } from '@/utils/functions';
 
 
 
@@ -39,7 +39,7 @@ export function CurrentWeather({ weather, cityName }: CurrentWeatherProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            <p className="text-sm font-medium">{formatDate(current.time)}</p>
+            <p className="text-sm font-medium">{formatDateTime(current.time)}</p>
           </div>
         </div>
       </CardContent>
