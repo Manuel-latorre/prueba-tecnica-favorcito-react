@@ -5,8 +5,8 @@ import { Badge } from './ui/badge';
 import { LoadingSpinner } from './ui/loading-spinner';
 import { useWeatherStore } from '../store/weatherStore';
 import { History, Search } from 'lucide-react';
-import { CitySearchSkeleton } from './city-search-skeleton';
-import { SuggestionsSkeleton } from './suggestions-skeleton';
+import { CitySearchSkeleton } from './ui/skeletons/city-search-skeleton';
+import { SuggestionsSkeleton } from './ui/skeletons/suggestions-skeleton';
 
 export const CitySearch = () => {
     const {
