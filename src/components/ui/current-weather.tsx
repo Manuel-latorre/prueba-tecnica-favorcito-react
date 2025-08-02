@@ -1,36 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Thermometer, Wind, Cloud } from 'lucide-react';
-import type { OpenMeteoCurrentResponse } from '@/types/weather.types';
+import { MapPin, Thermometer, Wind } from 'lucide-react';
+import type { CurrentWeatherProps } from '@/types/weather.types';
+import { getWeatherInfo } from '@/utils/weatherCodes';
 
-interface CurrentWeatherProps {
-  weather: OpenMeteoCurrentResponse;
-  cityName: string;
-}
 
-// Weather code mapping to descriptions and icons
-const weatherCodes: Record<number, { description: string; icon: string }> = {
-  0: { description: 'Despejado', icon: '☀️' },
-  1: { description: 'Mayormente despejado', icon: '🌤️' },
-  2: { description: 'Parcialmente nublado', icon: '⛅' },
-  3: { description: 'Nublado', icon: '☁️' },
-  45: { description: 'Niebla', icon: '🌫️' },
-  48: { description: 'Niebla con escarcha', icon: '🌫️' },
-  51: { description: 'Llovizna ligera', icon: '🌦️' },
-  53: { description: 'Llovizna moderada', icon: '🌧️' },
-  55: { description: 'Llovizna intensa', icon: '🌧️' },
-  61: { description: 'Lluvia ligera', icon: '🌧️' },
-  63: { description: 'Lluvia moderada', icon: '🌧️' },
-  65: { description: 'Lluvia intensa', icon: '🌧️' },
-  71: { description: 'Nieve ligera', icon: '🌨️' },
-  73: { description: 'Nieve moderada', icon: '🌨️' },
-  75: { description: 'Nieve intensa', icon: '🌨️' },
-  95: { description: 'Tormenta', icon: '⛈️' },
-};
-
-function getWeatherInfo(code: number) {
-  return weatherCodes[code] || { description: 'Desconocido', icon: '❓' };
-}
 
 export function CurrentWeather({ weather, cityName }: CurrentWeatherProps) {
   const { current } = weather;
