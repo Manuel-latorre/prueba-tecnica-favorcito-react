@@ -1,30 +1,14 @@
-import { AlertCircle, RefreshCw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import type { ErrorMessageProps } from '@/types/errors.types';
 
-interface ErrorMessageProps {
-  message: string;
-  onRetry?: () => void;
-  className?: string;
-}
 
-export function ErrorMessage({ message, onRetry, className = '' }: ErrorMessageProps) {
+export function ErrorMessage({ message }: ErrorMessageProps) {
   return (
-    <Alert variant="destructive" className={className}>
+    <Alert variant="destructive">
       <AlertCircle className="h-4 w-4" />
       <AlertDescription className="flex items-center justify-between">
         <span>{message}</span>
-        {onRetry && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onRetry}
-            className="ml-2 h-8 px-2"
-          >
-            <RefreshCw className="h-3 w-3 mr-1" />
-            Reintentar
-          </Button>
-        )}
       </AlertDescription>
     </Alert>
   );
