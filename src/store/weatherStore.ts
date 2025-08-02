@@ -25,6 +25,7 @@ interface WeatherState {
   
   // Computed actions
   searchWeather: (city: string) => Promise<void>;
+  searchWeatherByLocation: () => Promise<void>;
 }
 
 const MAX_SEARCH_HISTORY = 10;
@@ -107,6 +108,41 @@ export const useWeatherStore = create<WeatherState>()(
           setForecast(forecast);
           setLastSearchedCity(city);
           addToSearchHistory(city);
+
+        } catch (err) {
+          const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
+          setError(errorMessage);
+          setLocation(null);
+          setCurrentWeather(null);
+          setForecast(null);
+        } finally {
+          setLoading(false);
+        }
+      },
+
+      searchWeatherByLocation: async () => {
+        const { setLoading, setError, setLocation, setCurrentWeather, setForecast } = get();
+
+        setLoading(true);
+        setError(null);
+
+        try {
+          // Import services dynamically to avoid circular dependencies
+          const { getCurrentPosition, getWeatherByCoordinates } = await import('@/services/geolocationService');
+
+          // Step 1: Get current position
+          const position = await getCurrentPosition();
+          
+          // Step 2: Get weather data by coordinates
+          const { location, currentWeather, forecast } = await getWeatherByCoordinates(
+            position.latitude,
+            position.longitude
+          );
+
+          // Update state
+          setLocation(location);
+          setCurrentWeather(currentWeather);
+          setForecast(forecast);
 
         } catch (err) {
           const errorMessage = err instanceof Error ? err.message : 'Error desconocido';
