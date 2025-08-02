@@ -10,9 +10,9 @@ export function WeatherForecast({ forecast }: WeatherForecastProps) {
   const { daily } = forecast;
 
   return (
-    <Card className="w-full max-w-md h-full">
+    <Card className="card-max-width h-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex-center-gap-2">
           <Calendar className="h-5 w-5" />
           Pronóstico 7 días
         </CardTitle>
@@ -28,22 +28,22 @@ export function WeatherForecast({ forecast }: WeatherForecastProps) {
             return (
               <div
                 key={date}
-                className="flex items-center justify-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                className="flex-between p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex-center-gap-3">
                   <span className="text-2xl">{weatherInfo.icon}</span>
                   <div>
                     <p className="font-medium">{formatDate(date)}</p>
-                    <p className="text-sm text-muted-foreground">{weatherInfo.description}</p>
+                    <p className="text-muted-sm">{weatherInfo.description}</p>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
+                <div className="flex-center-gap-4">
+                  <div className="flex-center-gap-1">
                     <ThermometerSun className="h-4 w-4 text-orange-500" />
                     <span className="text-sm font-medium">{maxTemp}°</span>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex-center-gap-1">
                     <ThermometerSnowflake className="h-4 w-4 text-blue-500" />
                     <span className="text-sm font-medium">{minTemp}°</span>
                   </div>
