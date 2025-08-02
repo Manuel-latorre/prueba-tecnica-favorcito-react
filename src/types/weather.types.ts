@@ -1,20 +1,11 @@
-export interface WeatherLocation {
-  id: number;
-  name: string;
+// Base types for coordinates
+export interface Coordinates {
   latitude: number;
   longitude: number;
-  country: string;
-  admin1?: string;
-  admin2?: string;
-  admin3?: string;
 }
 
-export interface OpenMeteoGeocodingResponse {
-  results: WeatherLocation[];
-  generationtime_ms: number;
-}
-
-export interface OpenMeteoCurrentResponse {
+// Base type for OpenMeteo API responses
+export interface OpenMeteoBaseResponse {
   latitude: number;
   longitude: number;
   generationtime_ms: number;
@@ -22,6 +13,32 @@ export interface OpenMeteoCurrentResponse {
   timezone: string;
   timezone_abbreviation: string;
   elevation: number;
+}
+
+// Location types
+export interface WeatherLocation extends Coordinates {
+  id: number;
+  name: string;
+  country: string;
+  admin1?: string;
+  admin2?: string;
+  admin3?: string;
+}
+
+export interface CitySuggestion extends Coordinates {
+  id: string;
+  name: string;
+  admin1?: string;
+  country: string;
+}
+
+// API Response types
+export interface OpenMeteoGeocodingResponse {
+  results: WeatherLocation[];
+  generationtime_ms: number;
+}
+
+export interface OpenMeteoCurrentResponse extends OpenMeteoBaseResponse {
   current_units: {
     time: string;
     interval: string;
@@ -38,14 +55,7 @@ export interface OpenMeteoCurrentResponse {
   };
 }
 
-export interface OpenMeteoForecastResponse {
-  latitude: number;
-  longitude: number;
-  generationtime_ms: number;
-  utc_offset_seconds: number;
-  timezone: string;
-  timezone_abbreviation: string;
-  elevation: number;
+export interface OpenMeteoForecastResponse extends OpenMeteoBaseResponse {
   daily_units: {
     time: string;
     weather_code: string;
@@ -58,8 +68,9 @@ export interface OpenMeteoForecastResponse {
     temperature_2m_max: number[];
     temperature_2m_min: number[];
   };
-} 
+}
 
+// Component Props
 export interface CurrentWeatherProps {
   weather: OpenMeteoCurrentResponse;
   cityName: string;
@@ -69,15 +80,7 @@ export interface WeatherForecastProps {
   forecast: OpenMeteoForecastResponse;
 }
 
-export interface CitySuggestion {
-  id: string;
-  name: string;
-  admin1?: string;
-  country: string;
-  latitude: number;
-  longitude: number;
-}
-
+// Data aggregation
 export interface WeatherData {
   location: WeatherLocation | null;
   currentWeather: OpenMeteoCurrentResponse | null;
