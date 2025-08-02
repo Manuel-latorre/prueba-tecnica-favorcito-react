@@ -133,6 +133,9 @@ export const useWeatherStore = create<WeatherState>()(
       partialize: (state) => ({
         lastSearchedCity: state.lastSearchedCity,
         searchHistory: state.searchHistory,
+        location: state.location,
+        currentWeather: state.currentWeather,
+        forecast: state.forecast,
       }),
     }
   )
