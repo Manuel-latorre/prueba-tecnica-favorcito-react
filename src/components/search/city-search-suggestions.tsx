@@ -13,7 +13,7 @@ export function CitySearchSuggestions({
     onHistorySelect
 }: CitySearchSuggestionsProps) {
     return (
-        <Card className="absolute z-10 w-full max-w-md mt-1 shadow-lg max-h-60 overflow-y-auto py-0">
+        <Card className="z-10 w-full max-w-md mt-1 shadow-lg max-h-60 overflow-y-auto py-0">
             <CardContent className="p-0">
                 {suggestions.length > 0 && (
                     <div>
