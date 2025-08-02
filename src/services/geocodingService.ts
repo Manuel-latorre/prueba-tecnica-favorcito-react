@@ -31,6 +31,31 @@ export async function geocoding(city: string): Promise<WeatherLocation> {
   }
 }
 
+export async function geocodingSuggestions(city: string): Promise<WeatherLocation[]> {
+  try {
+    const response = await fetchWithTimeout(
+      `${API_CONFIG.GEOCODING_URL}/search?name=${encodeURIComponent(
+        city
+      )}&count=5&language=es&format=json`
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+
+    const data: OpenMeteoGeocodingResponse = await response.json();
+
+    if (!data.results || data.results.length === 0) {
+      return [];
+    }
+
+    return data.results;
+  } catch (error) {
+    console.error("Error en geocoding suggestions:", error);
+    return [];
+  }
+}
+
 export async function reverseGeocoding(latitude: number, longitude: number): Promise<WeatherLocation> {
   try {
     const response = await fetchWithTimeout(
