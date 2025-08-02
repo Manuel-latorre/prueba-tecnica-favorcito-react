@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { geocoding } from '@/services/geocodingService';
-import { getCurrentWeather } from '@/services/currentWeatherService';
-import { getForecast } from '@/services/forecastService';
+import { getCurrentWeather, getForecast } from '@/services/weatherService';
 import type { UseWeatherReturn, WeatherData } from '@/types/weather.types';
 
 
