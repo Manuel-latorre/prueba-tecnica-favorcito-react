@@ -20,8 +20,8 @@ export function WeatherApp() {
   } = useWeatherStore();
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center max-md:p-4 py-10">
-      <div className="max-w-4xl mx-auto space-y-6 w-full">
+    <div className="app-layout">
+      <div className="main-container">
         <div className="flex justify-center">
           {loading ? <CitySearchSkeleton /> : <CitySearch />}
         </div>
@@ -33,7 +33,7 @@ export function WeatherApp() {
         )}
 
         {loading ? (
-          <div className='flex flex-col gap-4 w-full justify-center items-center'>
+          <div className='weather-data-layout'>
             <CurrentWeatherSkeleton />
             <WeatherForecastSkeleton />
           </div>
