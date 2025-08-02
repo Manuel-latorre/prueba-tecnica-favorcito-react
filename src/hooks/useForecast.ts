@@ -1,14 +1,7 @@
 import { useState, useCallback } from 'react';
 import { getForecast } from '@/services/forecastService';
-import type { OpenMeteoForecastResponse } from '@/types/weather.types';
+import type { OpenMeteoForecastResponse, UseForecastReturn } from '@/types/weather.types';
 
-interface UseForecastReturn {
-  forecast: OpenMeteoForecastResponse | null;
-  loading: boolean;
-  error: string | null;
-  fetchForecast: (lat: number, lon: number) => Promise<void>;
-  reset: () => void;
-}
 
 export function useForecast(): UseForecastReturn {
   const [forecast, setForecast] = useState<OpenMeteoForecastResponse | null>(null);
