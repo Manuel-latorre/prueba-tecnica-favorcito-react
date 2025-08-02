@@ -12,7 +12,7 @@ export default function WeatherDataDisplay({
     cityName: string;
   }) {
     return (
-      <div className='flex flex-col gap-4 w-full justify-center items-center'>
+      <div className='weather-data-layout'>
         <CurrentWeather
           weather={currentWeather}
           cityName={cityName}
