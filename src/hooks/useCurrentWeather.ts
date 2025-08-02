@@ -1,14 +1,8 @@
 import { useState, useCallback } from 'react';
 import { getCurrentWeather } from '@/services/currentWeatherService';
-import type { OpenMeteoCurrentResponse } from '@/types/weather.types';
+import type { OpenMeteoCurrentResponse, UseCurrentWeatherReturn } from '@/types/weather.types';
 
-interface UseCurrentWeatherReturn {
-  weather: OpenMeteoCurrentResponse | null;
-  loading: boolean;
-  error: string | null;
-  fetchCurrentWeather: (lat: number, lon: number) => Promise<void>;
-  reset: () => void;
-}
+
 
 export function useCurrentWeather(): UseCurrentWeatherReturn {
   const [weather, setWeather] = useState<OpenMeteoCurrentResponse | null>(null);
