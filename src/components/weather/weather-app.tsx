@@ -21,7 +21,7 @@ export function WeatherApp() {
 
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center max-md:p-4 py-10">
-      <div className="max-w-4xl mx-auto space-y-6 w-full">
+      <div className="max-w-md w-full flex flex-col gap-4">
         <div className="flex justify-center">
           {loading ? <CitySearchSkeleton /> : <CitySearch />}
         </div>
